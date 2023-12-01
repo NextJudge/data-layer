@@ -16,10 +16,15 @@ func main() {
 	var port = flag.String("p", "5000", "port")
 	var bind = flag.String("bind", "*", "interface to bind on")
 
+	db, err := NewDatabase()
+	if err != nil {
+		log.Fatalln("error initializing db")
+	}
+
 	mux := goji.NewMux()
 	c := cors.New(cors.Options{
 		AllowedOrigins: cfg.CORSOrigin,
-		AllowedHeaders: []string{"Content-Type", "X-Amz-Date", "Authorization", "X-Api-Key", "X-Amz-Security-Token", "X-Amz-User-Agent"},
+		AllowedHeaders: []string{"Content-Type", "Authorization"},
 		AllowedMethods: []string{"HEAD", "GET", "POST", "PUT", "PATCH", "DELETE"},
 		MaxAge:         3600,
 	})
